@@ -1,0 +1,32 @@
+﻿@using WebApplication.Engine
+@using WebApplication1.Components
+@model Filter
+@{
+    ViewData["Title"] = "Hyper Casa";
+}
+
+<div>
+    <div>
+        <section class="text-center mb-5">
+                <p> Encontra aqui a tua casa! </p>
+                @await Component.InvokeAsync("RealestateFilter", new Filter())
+        </section>
+        @await Component.InvokeAsync("RealestateList")
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+      urlList = "/Realestate/List?";
+
+      $(document).ready(function(){
+        $("#realestate-filters").submit(function(event){
+            event.preventDefault();
+            params = $("#realestate-filters").serialize();
+
+            window.location.href = urlList + params
+        });
+      });
+    </script>
+}

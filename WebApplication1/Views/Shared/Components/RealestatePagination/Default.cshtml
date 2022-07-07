@@ -1,0 +1,21 @@
+﻿@using WebApplication.Engine
+@model Filter
+@{
+  double page = (Model.Count.HasValue ? (double)Model.Count : 0)  / (Model.Limit.HasValue ? (double)Model.Limit : 1);
+  int pages = (int)Math.Ceiling(page);
+}
+ 
+<div class="row justify-content-center" id="realestate-pagination">
+  @if (Model.Page > 0)
+  {
+    <button onclick="return ToPage(0);" id="pagination-first" class="btn mr-2">Primeira</button>
+  }
+  @for (var number = 1; number <= pages; number++)
+  {
+    <button @(number == Model.Page + 1 ? "disabled" : null) onclick="return ToPage(@number - 1);" class="btn mx-1">@number</button>
+  }
+  @if (Model.Page + 1  < pages)
+  {
+    <button onclick="return ToPage(@pages - 1);" id="pagination-last" class="btn ml-2">Última</button>
+  }
+</div>

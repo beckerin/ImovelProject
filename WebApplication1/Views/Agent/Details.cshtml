@@ -1,0 +1,37 @@
+﻿@using WebApplication.Engine
+@using WebApplication1.Components
+@model AgentModel
+
+<div>
+    <div class="row">
+        <div class="card col-4 p-0">
+            <img class="img-fluid " src="https://random.imagecdn.app/250/600">
+            <div class="card-body">
+                <h5 class="card-title justify-content-between mx-0 row">
+                    <a>
+                        @Model.Name
+                    </a>
+                    <a href="@Url.Action("Edit","Agent", new  {id = Model.ID })" class="btn btn-light">
+                        editar
+                    </a>
+                </h5>
+                <p class="card-text">
+                    @Model.Email
+                </p>
+                <p class="card-text">
+                    @Model.Phone
+                </p>
+            </div>
+            <div class="card-footer">
+                @Model.Address
+            </div>
+        </div>
+        <div class="card col p-4">
+            <h4 class="mb-2">
+                Imóveis deste agente
+            </h4>
+
+            @await Component.InvokeAsync("RealestateList")
+        </div>
+    </div>
+</div>

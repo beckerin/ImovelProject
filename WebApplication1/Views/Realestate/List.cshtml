@@ -1,0 +1,62 @@
+﻿@using WebApplication.Engine
+@model Filter
+@{
+  ViewData["Title"] = "Listagem de Imóveis";
+}
+<div>
+  @await Component.InvokeAsync("RealestateFilter")
+  @await Component.InvokeAsync("RealestateList")
+  @await Component.InvokeAsync("RealestatePagination")
+</div>
+
+
+@section Scripts {
+
+<script>
+  urlFilter = "/Realestate/RequestFilter";
+  urlList = "/Realestate/RequestList";
+  urlPagination = "/Realestate/RequestPagination";
+
+  filterID = "#realestate-filters";
+  listID = "#realestate-list";
+  paginationID = "#realestate-pagination";
+
+  const ToPage = function (value) {
+      params = $(filterID).serialize() + "&Page=" + value;
+
+      RefreshFilter(params);
+  }
+
+  const RefreshFilter = function (params) {
+      $.ajax({
+          url: urlFilter,
+          method: "GET",
+          data: params,
+      }).done(function (response) {
+          $(filterID).replaceWith(response);
+              Replace("#realestate-list", urlList);
+              Replace("#realestate-pagination", urlPagination);
+      });
+  }
+  const Replace = function (name, urlDest, params) {
+      $.ajax({
+          url: urlDest,
+          method: "GET",
+          data: params,
+      }).done(function (response) {
+          $(name).replaceWith(response);
+      });
+  }
+
+  const Filter = function(event) {
+    event.preventDefault();
+
+    params = $("#realestate-filters").serialize();
+
+    RefreshFilter(params);
+    return false;
+  }
+</script>
+
+
+}

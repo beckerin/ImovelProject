@@ -1,0 +1,50 @@
+﻿@using WebApplication.Engine
+@using WebApplication1.Components
+@model AgentModel
+@{
+  ViewData["Title"] = "Edição de um agente";
+  Filter filter = new()
+  {
+    AgentID = Model.ID,
+  };
+}
+
+<form method="post">
+  <div class="row mb-4">
+    <div class="col">
+      <label class="form-label" for="name">Nome Completo</label>
+      <input class="form-control" type="text" id="name" name="Name" value=@Model.Name />
+    </div>
+    <div class="col">
+      <label class="form-label" for="email">E-mail</label>
+      <input class="form-control" type="email" id="email" name="email" value="@Model.Email" />
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col">
+      <label class="form-label" for="phone">Telemóvel</label>
+      <input class="form-control" type="tel" id="phone" name="phone" value="@Model.Phone" />
+    </div>
+    <div class="col">
+      <label class="form-label" for="address">Morada</label>
+      <input class="form-control" type="text" id="address" name="address" value="@Model.Address" />
+    </div>
+    <div class="col">
+      <label class="form-label" for="picture">Foto de Perfil</label>
+      <input class="form-control" type="file" id="picture" name="picture" value="@Model.Picture" />
+    </div>
+  </div>
+  @if (filter.AgentID > 0)
+  {
+    <div class="text-center">
+      <p class="mb-4">
+        Imoveis linkados
+      </p>
+      @await Component.InvokeAsync("RealestateList")
+    </div>
+  }
+  <div class="row mx-0 mt-4">
+    <button type="submit" class="btn btn-success mr-4">Enviar</button>
+    <button type="reset" class="btn btn-danger">Resetar</button>
+  </div>
+</form>

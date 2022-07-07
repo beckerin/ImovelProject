@@ -1,0 +1,68 @@
+﻿@model WebApplication1.Models.RealestateModel
+
+@{
+    ViewData["Title"] = "Criar novo imovel";
+}
+
+<form method="post" >
+    <div class="row g-0">
+        <div class="col-md-4 mb-3">
+            <label for="title" class="form-label">Título do anúncio</label>
+            <input type="text" class="form-control" id="title" name="title" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="salePrice" class="form-label">Preço do Arrendamento</label>
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                <input type="text" class="form-control" id="salePrice" name="SalePrice"/>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="rentPrice" class="form-label">Preço do Venda</label>
+            <div class="input-group">
+                <span class="input-group-text">€</span>
+                <input type="text" class="form-control" id="rentPrice" name="RentPrice"/>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-12 mb-3">
+            <label for="description" class="form-label">Descrição do anúncio</label>
+            <textarea class="form-control" id="Description" name="Description"></textarea>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-5 mb-3">
+            <label for="pictures" class="form-label">Fotos</label>
+            <input type="file" class="form-control" id="pictures" name="Pictures" />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="area" class="form-label">Area do imóvel</label>
+            <input type="number" class="form-control" id="Area" name="Area" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="address" class="form-label">Endereço do imóvel</label>
+            <input type="text" class="form-control" id="Address" name="Address" />
+        </div>
+    </div>
+    <div class="mb-4">
+        <p>Numeros de Quartos</p>
+        <div>
+            @for(int number = 0; number <= 5; number++)
+            {
+             <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="@number+'quarto'" name="Rooms" value="@number" />
+                <label class="form-check-label" for="@number+'quarto'">@number</label>
+             </div>   
+            }
+        </div>
+    </div>
+    <div class="row mb-3 ml-4">
+        <input type="checkbox" class="form-check-input" id="termos" />
+        <label class="form-check-label" for="termos">Aceito os <a>termos</a> de uso</label>
+    </div>
+    <div class="row">
+        <button type="submit" class="col-md-2 mr-3 btn btn-primary">Enviar</button>
+        <button type="reset" class="col-md-2 btn btn-danger">Resetar</button>
+    </div>
+</form>

@@ -1,0 +1,83 @@
+﻿@using WebApplication.Engine
+@model RealestateModel
+
+@{
+    ViewData["Title"] = "Edição de imovel";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="p-0 m-0">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <label for="title" class="form-label">Título do anúncio</label>
+                <input type="text" class="form-control" id="title" name="Title" value="@Model.Title" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="salePrice" class="form-label">Preço do Arrendamento</label>
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="text" class="form-control" id="salePrice" name="SalePrice" value="@Model.SalePrice" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="rentPrice" class="form-label">Preço do Venda</label>
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="text" class="form-control" id="rentPrice" name="RentPrice" value="@Model.RentPrice" />
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12 mb-3">
+                <label for="description" class="form-label">Descrição do anúncio</label>
+                <textarea class="form-control" id="Description" name="Description">@Model.Description</textarea>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-5 mb-3">
+                <label for="pictures" class="form-label">Fotos</label>
+                <input type="file" multiple class="form-control" id="pictures" name="Pictures" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="area" class="form-label">Area do imóvel</label>
+                <input type="number" class="form-control" id="Area" name="Area" value="@Model.Area" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="address" class="form-label">Endereço do imóvel</label>
+                <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" />
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-4">
+                <p>Numeros de Quartos</p>
+                <div>
+                    @for (int number = 0; number <= 5; number++)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input rounded-0" type="radio" id=@(number + "_quarto") name="Rooms" value="@number" @(Model.Rooms == number ? "checked" : null) />
+                            <label class="form-check-label" for=@(number + "_quarto")>@number</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="AgentID">Agente Associado</label>
+                <select class="form-control" name="AgentID" id="AgentID" value=@Model.AgentID>
+                    <option value="null" selected>Sem agente</option>
+                    @foreach (Agent agent in Agent.GetAgents())
+                    {
+                        <!option @(Model.AgentID == agent.ID ? "selected": null) value=@agent.ID >@agent.Name</!option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-check mb-4">
+            <input type="checkbox" class="form-check-input" id="termos" />
+            <label class="form-check-label" for="termos">Aceito os termos de uso</label>
+        </div>
+        <div class="mb-4">
+            <button type="submit" class="col-md-2 mr-3 btn btn-primary">Enviar</button>
+            <button type="reset" class="col-md-2 btn btn-danger">Resetar</button>
+        </div>
+    </div>
+</form>

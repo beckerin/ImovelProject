@@ -1,0 +1,109 @@
+﻿@using WebApplication.Engine
+@model Filter
+
+<section class="mb-8 row justify-content-around" id="realestate-list">
+  @if (Model.List.Count == 0)
+  {
+    <div class="card mb-3 col-12 text-center">
+      <div class="card-body">
+        Nenhum resultado encontrado
+      </div>
+    </div>
+  }
+  else
+  {
+    @for (var index = 1; index <= Model.List.Count; index++)
+    {
+      Realestate rs = Model.List[index-1];
+      @if (Model.Large == true)
+      {
+        <div class="col-12 card mb-4">
+          <div class="row">
+            <div class="col-4 m-0 p-0">
+              @if (rs.GetBase64Pictures().Count > 0)
+              {
+                <img height="200" width="150" src="@rs.GetBase64Pictures().FirstOrDefault()">
+              }
+              else
+              {
+                <img class="card-img-top" src="https://random.imagecdn.app/200/150">
+              }
+            </div>
+            <div class="card-body col-8">
+              <h5 class="card-title">
+                @rs.Title @rs.ID
+              </h5>
+              <div class="row">
+                <p class="card-text col-2">
+                  @(rs.Rooms > 0 ? rs.Rooms+" Quartos" : null)
+                </p>
+                <p class="card-text col-2">
+                  @(rs.Area > 0 ? rs.Area+"m²" : null)
+                </p>
+                <p class="card-text col-2">
+                  @(rs.RentPrice > 0 ? rs.RentPrice + "€/Mês" : null)
+                </p>
+                <p class="card-text col-2">
+                  @(rs.SalePrice > 0 ? rs.SalePrice + "€/Venda" : null)
+                </p>
+              </div>
+              <p class="card-text">
+                @rs.Description
+              </p>
+              <p class="card-text">
+                @rs.Address
+              </p>
+            </div>
+            <div class="col-12 card-footer justify-content-end row m-0 py-1">
+              <a class="btn btn-primary mx-2" href="@Url.Action("Edit","Realestate", new {id = rs.ID})">Visualizar</a>
+              <a class="btn btn-dark" href="@Url.Action("Edit","Realestate", new {id = rs.ID})">Editar</a>
+            </div>
+          </div>
+        </div>
+      }
+      else
+      {
+        <div class="col-md-4 @(index == Model.Limit ? "m-0": null)">
+          <div class="row card mb-4 @(index != Model.Limit ? "mr-1": null)">
+            @if (Model.Editing == true) { }
+            else if (rs.GetBase64Pictures().Count > 0)
+            {
+              <img class="img-fluid" height="200" width="150" src="@rs.GetBase64Pictures().FirstOrDefault()">
+            }
+            else
+            {
+              <img class="card-img-top" src="https://random.imagecdn.app/200/150">
+            }
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="@Url.Action("Details","Realestate", new {id = rs.ID })">
+                  @rs.Title
+                </a>
+              </h5>
+              <p class="card-text">
+                @rs.Description
+              </p>
+              <p class="card-text">
+                @rs.Rooms Quartos @rs.Area m²
+              </p>
+              <p class="card-text">
+                @(rs.RentPrice > 0 ? rs.RentPrice + "€/Mês" : null)
+                @(rs.SalePrice > 0 ? rs.SalePrice + "€/Venda" : null)
+              </p>
+            </div>
+            <div class="card-footer px-4">
+              <p>
+                @rs.Address
+              </p>
+              <div class="row justify-content-between" @(Model.Editing == true ? null : "hidden")>
+                <a class="btn btn-dark" href="@Url.Action("Edit","Realestate", new {id = rs.ID})">Editar</a>
+                <a class="btn btn-danger" href="@Url.Action("Delete","Agent", new {id = rs.ID})">Remover deste agente</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  }
+
+</section>
