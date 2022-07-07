@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
                     Large = false,
                 };
 
-                Filter.SetFilter(filter);
+                filter.FillStatic(filter);
                 
                 if (model != null)
                     return View(model);

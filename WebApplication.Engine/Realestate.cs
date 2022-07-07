@@ -282,7 +282,7 @@ namespace WebApplication.Engine
                     realestates = realestates.Where(x => x.RentPrice > 0);
             }
 
-            if (filter.AgentID.HasValue)
+            if (filter.AgentID.HasValue && filter.AgentID != 0)
                 realestates = realestates.Where(x => x.AgentID == filter.AgentID);
 
             return realestates.ToList();

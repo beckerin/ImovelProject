@@ -9,8 +9,6 @@ namespace WebApplication.Engine
 {
     public class Filter
     {
-        public static Filter _filter { get; set; } = new Filter();
-
         public string? Address { get; set; }
         public int? MinRooms { get; set; }
         public int? MaxRooms { get; set; }
@@ -52,102 +50,40 @@ namespace WebApplication.Engine
 
 
         public List<Realestate> List { get; set; }
-        public static List<int> StaticList { get; set; }
+        public List<int> StaticList { get; set; }
 
         public Filter()
         {
         }
 
-        public static void FillStatic(Filter filter)
+        public void FillStatic(Filter filter)
         {
-            _filter.Address = filter.Address;
-            if (filter.Large != null) _filter.Large = filter.Large;
-            if (filter.Limit != null && filter.Limit > 0) _filter.Limit = filter.Limit;
-            if (filter.MinRooms != null) _filter.MinRooms = filter.MinRooms;
-            if (filter.MaxRooms != null) _filter.MaxRooms = filter.MaxRooms;
-            if (filter.MinSalePrice != null) _filter.MinSalePrice = filter.MinSalePrice;
-            if (filter.MaxSalePrice != null) _filter.MaxSalePrice = filter.MaxSalePrice;
-            if (filter.MinRentPrice != null) _filter.MinRentPrice = filter.MinRentPrice;
-            if (filter.MaxRentPrice != null) _filter.MaxRentPrice = filter.MaxRentPrice;
-            if (filter.MinArea != null) _filter.MinArea = filter.MinArea;
-            if (filter.MaxArea != null) _filter.MaxArea = filter.MaxArea;
-            if (filter.OrderBy != null) _filter.OrderBy = filter.OrderBy;
-            if (filter.AgentID != null) _filter.AgentID = filter.AgentID;
-            if (filter.Limit != null) _filter.Limit = filter.Limit;
-            if (filter.Page != null) _filter.Page = filter.Page;
-            if (filter.Count != null) _filter.Count = filter.Count;
-            if (filter.Editing != null) _filter.Editing = filter.Editing;
-            if (filter.Home != null) _filter.Home = filter.Home;
-            if (filter.Large != null) _filter.Large = filter.Large;
-            if (filter.Option != null) _filter.Option = filter.Option;
-        }
-        public static Filter GetFilter()
-        {
-            return _filter;
-        }
-        public static void SetFilter(Filter value)
-        {
-            _filter = value;
-        }
-        public void Populate()
-        {
-            List = Realestate.GetRealestates(this);
+            Address = filter.Address;
+            if (filter.Large != null) Large = filter.Large;
+            if (filter.Limit != null && filter.Limit > 0) Limit = filter.Limit;
+            if (filter.MinRooms != null) MinRooms = filter.MinRooms;
+            if (filter.MaxRooms != null) MaxRooms = filter.MaxRooms;
+            if (filter.MinSalePrice != null) MinSalePrice = filter.MinSalePrice;
+            if (filter.MaxSalePrice != null) MaxSalePrice = filter.MaxSalePrice;
+            if (filter.MinRentPrice != null) MinRentPrice = filter.MinRentPrice;
+            if (filter.MaxRentPrice != null) MaxRentPrice = filter.MaxRentPrice;
+            if (filter.MinArea != null) MinArea = filter.MinArea;
+            if (filter.MaxArea != null) MaxArea = filter.MaxArea;
+            if (filter.OrderBy != null) OrderBy = filter.OrderBy;
+            if (filter.AgentID != null) AgentID = filter.AgentID;
+            if (filter.Limit != null) Limit = filter.Limit;
+            if (filter.Page != null) Page = filter.Page;
+            if (filter.Count != null) Count = filter.Count;
+            if (filter.Editing != null) Editing = filter.Editing;
+            if (filter.Home != null) Home = filter.Home;
+            if (filter.Large != null) Large = filter.Large;
+            if (filter.Option != null) Option = filter.Option;
         }
 
-        public void Filtrar()
+        public void Populate()
         {
             List<Realestate> rsList = Realestate.GetRealestates(this);
 
-            //foreach (Realestate item in List)
-            //{
-            //    if (Address != null && !item.Address.ToLower().Contains(Address.ToLower()))
-            //    {
-            //        rsList.Remove(item);
-            //        continue;
-
-            //    }
-            //    if (MaxRooms != 0 && MinRooms != 0)
-            //    {
-            //        if (item.Rooms > MaxRooms ||item.Rooms < MinRooms)
-            //            rsList.Remove(item);
-            //        continue;
-            //    }
-            //    else if (item.Rooms < MinRooms && MinRooms != 0)
-            //    {
-            //        rsList.Remove(item);
-            //        continue;
-            //    }
-            //    else if (item.Rooms > MaxRooms && MaxRooms != 0)
-            //    {
-            //        rsList.Remove(item);
-            //        continue;
-            //    }
-
-            //    if (Option.HasValue)
-            //    {
-            //        if (Option == OptionType.Undefined)
-            //        {
-            //            continue;
-            //        }
-            //        else if (item.SalePrice > 0 && Option != OptionType.Sale)
-            //        {
-            //            rsList.Remove(item);
-            //            continue;
-            //        }
-
-            //        else if (item.RentPrice > 0 && Option != OptionType.Rent)
-            //        {
-            //            rsList.Remove(item);
-            //            continue;
-            //        }
-            //    }
-
-            //    if (AgentID.HasValue && AgentID != 0 && AgentID != item.AgentID)
-            //    {
-            //        rsList.Remove(item);
-            //        continue;
-            //    }
-            //}
             if (OrderBy.HasValue)
                 rsList.OrderBy(item => item.ID);
 

@@ -9,9 +9,9 @@
     <div>
         <section class="text-center mb-5">
                 <p> Encontra aqui a tua casa! </p>
-                @await Component.InvokeAsync("RealestateFilter", new Filter())
+                @await Component.InvokeAsync("RealestateFilter", Model)
         </section>
-        @await Component.InvokeAsync("RealestateList")
+        @await Component.InvokeAsync("RealestateList", Model)
     </div>
 </div>
 

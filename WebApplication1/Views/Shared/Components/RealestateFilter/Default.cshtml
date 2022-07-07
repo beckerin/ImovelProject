@@ -2,70 +2,81 @@
 @model Filter
 
 <form method="get" class="row justify-content-between mb-4 text-left" id="realestate-filters" onsubmit="return Filter(event)">
-  <div class="col-2 mr-2 p-0">
-    Tipo de Contrato
-    <select name="Option" class="form-control mt-2">
-      <option value="Undefined">Não Especificado</option>
-      <option value="Sale">Venda</option>
-      <option value="Rent">Arrendamento</option>
-    </select>
-  </div>
-  @if (!Model.Home == true)
-  {
+    <div class="d-none">
+        <input name="Limit" value="@Model.Limit" />
+        <input name="Page" class="page" id="Page" value="@Model.Page" />
+        <input name="Count" value="@Model.Count" />
+
+        <input name="OrderBy" id="OrderBy" type="checkbox" value="true" @(Model.OrderBy == true ? "checked" : null) />
+        <input name="Editing" id="Editing" type="checkbox" value=true @(Model.Editing == true ? "checked" : null) />
+        <input name="Home" id="Home" type="checkbox" value="true" @(Model.Home == true ? "checked" : null) />
+        <input name="Large" id="2" type="checkbox" value="true" @(Model.Large == true ? "checked" : null) />
+
+    </div>
     <div class="col-2 mr-2 p-0">
-      Qtd. Quartos
-      <div class="mt-2 row mx-0 justify-content-between">
-        <div>
-          <select class="form-control" name="MinRooms" value="@Model.MinRooms">
-            <option value="0">Min</option>
-            @for (int filterMinRooms = 1; filterMinRooms <= 5; filterMinRooms++)
-            {
-              <option value="@filterMinRooms" selected="@(filterMinRooms == Model.MinRooms)">@filterMinRooms</option>
-            }
-          </select>
-        </div>
-        <div>
-          <select class="form-control" name="MaxRooms" value="@Model.MaxRooms">
-            <option value="0">Max</option>
-            @for (int filterMaxRooms = 1; filterMaxRooms <= 5; filterMaxRooms++)
-            {
-              <option value="@filterMaxRooms" selected="@(filterMaxRooms == Model.MaxRooms)">@filterMaxRooms</option>
-            }
-          </select>
-        </div>
-      </div>
+        Tipo de Contrato
+        <select name="Option" class="form-control mt-2">
+            <option value="Undefined">Não Especificado</option>
+            <option value="Sale">Venda</option>
+            <option value="Rent">Arrendamento</option>
+        </select>
     </div>
-  }
-  <div class="col mr-2 p-0">
-    <label class="form-label" for="Address">Endereço</label>
-    <div>
-      <input class="col px-1 form-control"
-             placeholder="Concelho, freguesia"
-             type="text" id="Address" name="Address"
-             value=@Model.Address />
-    </div>
-  </div>
-  @if (!Model.Home == true)
-  {
+    @if (!Model.Home == true)
+    {
+        <div class="col-2 mr-2 p-0">
+            Qtd. Quartos
+            <div class="mt-2 row mx-0 justify-content-between">
+                <div>
+                    <select class="form-control" name="MinRooms" value="@Model.MinRooms">
+                        <option value="0">Min</option>
+                        @for (int filterMinRooms = 1; filterMinRooms <= 5; filterMinRooms++)
+                        {
+                            <option value="@filterMinRooms" selected="@(filterMinRooms == Model.MinRooms)">@filterMinRooms</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <select class="form-control" name="MaxRooms" value="@Model.MaxRooms">
+                        <option value="0">Max</option>
+                        @for (int filterMaxRooms = 1; filterMaxRooms <= 5; filterMaxRooms++)
+                        {
+                            <option value="@filterMaxRooms" selected="@(filterMaxRooms == Model.MaxRooms)">@filterMaxRooms</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    }
     <div class="col mr-2 p-0">
-      <label class="form-label" for="AgentID">Agente Associado</label>
-      <select class="form-control" name="AgentID" id="AgentID" value=@Model.AgentID>
-        <option value="0">Todos</option>
-        @foreach (Agent agent in Agent.GetAgents())
-        {
-          <!option @(Model.AgentID == agent.ID ? "selected": null) value=@agent.ID >@agent.Name</!option>
-        }
-      </select>
+        <label class="form-label" for="Address">Endereço</label>
+        <div>
+            <input class="col px-1 form-control"
+                   placeholder="Concelho, freguesia"
+                   type="text" id="Address" name="Address"
+                   value=@Model.Address />
+        </div>
     </div>
-    <div class="button-group mt-4">
-      <button type="submit" class="btn btn-info mt-2">Refresh</button>
-      <a href="@Url.Action("Create","Realestate")" class="btn btn-primary mt-2"> Criar novo imóvel </a>
-    </div>
-  }
-  else
-  {
-    <div class="button-group mt-4">
-      <button type="submit" class="btn btn-info mt-2">Buscar</button>
-    </div>
-  }
+    @if (!Model.Home == true)
+    {
+        <div class="col mr-2 p-0">
+            <label class="form-label" for="AgentID">Agente Associado</label>
+            <select class="form-control" name="AgentID" id="AgentID" value=@Model.AgentID>
+                <option value="0">Todos</option>
+                @foreach (Agent agent in Agent.GetAgents())
+                {
+                    <!option @(Model.AgentID == agent.ID ? "selected": null) value=@agent.ID >@agent.Name</!option>
+                }
+            </select>
+        </div>
+        <div class="button-group mt-4">
+            <button type="submit" class="btn btn-info mt-2">Refresh</button>
+            <a href="@Url.Action("Create","Realestate")" class="btn btn-primary mt-2"> Criar novo imóvel </a>
+        </div>
+    }
+    else
+    {
+        <div class="button-group mt-4">
+            <button type="submit" class="btn btn-info mt-2">Buscar</button>
+        </div>
+    }
 </form>

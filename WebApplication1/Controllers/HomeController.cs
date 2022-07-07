@@ -31,8 +31,7 @@ namespace WebApplication1.Controllers
                 Home = true,
                 Page = 0,
             };
-            Filter.SetFilter(filter);
-
+            filter.Populate();
             return View(filter);
         }
 
@@ -46,7 +45,7 @@ namespace WebApplication1.Controllers
                 Large = true,
                 Option = Filter.ParseOption(collection["Option"]),
             };
-            Filter.SetFilter(filter);
+            filter.FillStatic(filter);
 
             return RedirectToAction("List", "Realestate");
         }

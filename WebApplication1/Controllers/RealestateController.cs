@@ -25,7 +25,8 @@ namespace WebApplication1.Controllers
             filter.Large = true;
             filter.Home = false;
             filter.Page = 0;
-            Filter.FillStatic(filter);
+            filter.FillStatic(filter);
+            filter.Populate();
 
             return View(filter);
         }
@@ -168,18 +169,16 @@ namespace WebApplication1.Controllers
 
         public IActionResult RequestFilter(Filter filter)
         {
-           // Filter.FillStatic(filter);
-
             return ViewComponent("RealestateFilter", filter);
         }
-        public IActionResult RequestList()
+        public IActionResult RequestList(Filter filter)
         {
-            return ViewComponent("RealestateList");
+            return ViewComponent("RealestateList", filter);
         }
 
-        public IActionResult RequestPagination()
+        public IActionResult RequestPagination(Filter filter)
         {
-            return ViewComponent("RealestatePagination");
+            return ViewComponent("RealestatePagination", filter);
         }
 
         public IActionResult GetRealestatePicture(int id)

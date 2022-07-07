@@ -9,13 +9,9 @@ namespace WebApplication1.Components
     [ViewComponent(Name = "RealestateFilter")]
     public class RealestateFilterViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(Filter filter)
         {
-            Filter filter = Filter.GetFilter();
             filter.Populate();
-
-            filter.Filtrar();
-
             return View(filter);
         }
     }
@@ -23,18 +19,20 @@ namespace WebApplication1.Components
     [ViewComponent(Name = "RealestateList")]
     public class RealestateListViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(Filter filter)
         {
-            return View(Filter.GetFilter());
+            filter.Populate();
+            return View(filter);
         }
     }
 
     [ViewComponent(Name = "RealestatePagination")]
     public class RealestatePaginationViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(Filter filter)
         {
-            return View(Filter.GetFilter());
+            filter.Populate();
+            return View(filter);
         }
     }
 

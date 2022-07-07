@@ -1,62 +1,74 @@
 ﻿@using WebApplication.Engine
 @model Filter
 @{
-  ViewData["Title"] = "Listagem de Imóveis";
+    ViewData["Title"] = "Listagem de Imóveis";
 }
 <div>
-  @await Component.InvokeAsync("RealestateFilter")
-  @await Component.InvokeAsync("RealestateList")
-  @await Component.InvokeAsync("RealestatePagination")
+    @await Component.InvokeAsync("RealestateFilter", Model)
+    @await Component.InvokeAsync("RealestateList", Model)
+    @await Component.InvokeAsync("RealestatePagination", Model)
 </div>
 
 
 @section Scripts {
 
-<script>
-  urlFilter = "/Realestate/RequestFilter";
-  urlList = "/Realestate/RequestList";
-  urlPagination = "/Realestate/RequestPagination";
+    <script>
+        urlFilter = "/Realestate/RequestFilter";
+        urlList = "/Realestate/RequestList";
+        urlPagination = "/Realestate/RequestPagination";
 
-  filterID = "#realestate-filters";
-  listID = "#realestate-list";
-  paginationID = "#realestate-pagination";
+        filterID = "#realestate-filters";
+        listID = "#realestate-list";
+        paginationID = "#realestate-pagination";
 
-  const ToPage = function (value) {
-      params = $(filterID).serialize() + "&Page=" + value;
+        const ToPage = function(value) {
+            $("#Page").val(value);
+            debugger;
+            params = $(filterID).serialize();
+            params = params.concat(
+                $("input[type=checkbox]:not(:checked)").map(function() {
+                    return  "&" + this.name +"=false"
+                }).get()
+            );
+            
+            RefreshFilter(params);
+        }
 
-      RefreshFilter(params);
-  }
+        const RefreshFilter = function(params) {
+            $.ajax({
+                url: urlFilter,
+                method: "GET",
+                data: params,
+            }).done(function(response) {
+                $(filterID).replaceWith(response);
+                Replace("#realestate-list", urlList, params);
+                Replace("#realestate-pagination", urlPagination, params);
+            });
+        }
+        const Replace = function(name, urlDest, params) {
+            $.ajax({
+                url: urlDest,
+                method: "GET",
+                data: params,
+            }).done(function(response) {
+                $(name).replaceWith(response);
+            });
+        }
 
-  const RefreshFilter = function (params) {
-      $.ajax({
-          url: urlFilter,
-          method: "GET",
-          data: params,
-      }).done(function (response) {
-          $(filterID).replaceWith(response);
-              Replace("#realestate-list", urlList);
-              Replace("#realestate-pagination", urlPagination);
-      });
-  }
-  const Replace = function (name, urlDest, params) {
-      $.ajax({
-          url: urlDest,
-          method: "GET",
-          data: params,
-      }).done(function (response) {
-          $(name).replaceWith(response);
-      });
-  }
+        const Filter = function(event) {
+            event.preventDefault();
 
-  const Filter = function(event) {
-    event.preventDefault();
+            params = $("#realestate-filters").serialize();
+            params = params.concat(
+                $("input[type=checkbox]:not(:checked)").map(function() {
+                    return  "&" + this.name +"=false"
+                }).get()
+            );
 
-    params = $("#realestate-filters").serialize();
-
-    RefreshFilter(params);
-    return false;
-  }
-</script>
+            RefreshFilter(params);
+            return false;
+        }
+    </script>
 
 
 }
