@@ -21,7 +21,7 @@ namespace WebApplication1.Controllers
             {
                 filter = new Filter();
             }
-            filter.Limit = 5;
+            filter.Limit = 4;
             filter.Large = true;
             filter.Home = false;
             filter.Page = 0;

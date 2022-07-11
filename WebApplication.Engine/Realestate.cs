@@ -264,28 +264,67 @@ namespace WebApplication.Engine
         public static List<Realestate> GetRealestates(Filter filter)
         {
             IQueryable<Realestate> realestates = Database.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(filter.Address))
             {
                 realestates = realestates.Where(x => x.Address.Contains(filter.Address, StringComparison.OrdinalIgnoreCase));
-            }
-            if (filter.MaxRooms > 0 && filter.MinRooms > 0)
-            {
-                realestates = realestates.Where(x => x.Rooms >= filter.MinRooms && x.Rooms <=filter.MaxRooms);
-            }
+                if (!string.IsNullOrWhiteSpace(filter.Address))
+                {
+                    realestates = realestates.Where(x => x.Address.Contains(filter.Address, StringComparison.OrdinalIgnoreCase));
+                }
+                if (filter.MaxRooms > 0 && filter.MinRooms > 0)
+                {
+                    realestates = realestates.Where(x => x.Rooms >= filter.MinRooms && x.Rooms <=filter.MaxRooms);
+                } 
+                else if(filter.MinRooms > 0)
+                {
+                    realestates = realestates.Where(x => x.Rooms >= filter.MinRooms);
+                }
+                else if(filter.MaxRooms > 0)
+                {
+                    realestates = realestates.Where(x => x.Rooms <= filter.MaxRooms);
+                }
+                if (filter.MinRentPrice > 0 && filter.MaxRentPrice > 0)
+                {
+                    realestates = realestates.Where(x => x.RentPrice >= filter.MinRentPrice && x.RentPrice <=filter.MaxRentPrice);
+                } 
+                else if(filter.MinRentPrice > 0)
+                {
+                    realestates = realestates.Where(x => x.RentPrice >= filter.MinRentPrice);
+                }
+                else if(filter.MaxRentPrice > 0)
+                {
+                    realestates = realestates.Where(x => x.RentPrice <= filter.MaxRentPrice);
+                }
+                if (filter.MinSalePrice > 0 && filter.MaxSalePrice > 0)
+                {
+                    realestates = realestates.Where(x => x.SalePrice >= filter.MinSalePrice && x.SalePrice <=filter.MaxSalePrice);
+                } 
+                else if(filter.MinSalePrice > 0)
+                {
+                    realestates = realestates.Where(x => x.SalePrice >= filter.MinSalePrice);
+                }
+                else if(filter.MaxSalePrice > 0)
+                {
+                    realestates = realestates.Where(x => x.SalePrice <= filter.MaxSalePrice);
+                }
+                if (filter.MinArea > 0 && filter.MaxArea > 0)
+                {
+                    realestates = realestates.Where(x => x.Area>= filter.MinArea && x.Area <= filter.MaxArea);
 
-            if (filter.Option.HasValue && filter.Option != Filter.OptionType.Undefined)
-            {
-                if (filter.Option == OptionType.Sale)
-                    realestates = realestates.Where(x => x.SalePrice > 0);
-                else
-                    realestates = realestates.Where(x => x.RentPrice > 0);
+                }
+                if (filter.Option.HasValue && filter.Option != Filter.OptionType.Undefined)
+                {
+                    if (filter.Option == OptionType.Sale)
+                        realestates = realestates.Where(x => x.SalePrice > 0);
+                    else
+                        realestates = realestates.Where(x => x.RentPrice > 0);
+                }
+
+                if (filter.AgentID.HasValue && filter.AgentID != 0)
+                    realestates = realestates.Where(x => x.AgentID == filter.AgentID);
+
+
+                return realestates.ToList();
             }
-
-            if (filter.AgentID.HasValue && filter.AgentID != 0)
-                realestates = realestates.Where(x => x.AgentID == filter.AgentID);
-
-            return realestates.ToList();
         }
 
         private static void UpdateRealstate(Realestate realestate)
