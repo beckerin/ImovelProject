@@ -1,7 +1,7 @@
 ﻿@using WebApplication.Engine
 @model Filter
 
-<form method="get" class="row justify-content-between mb-4 text-left" id="realestate-filters" onsubmit="return Filter(event)">
+<form method="post" class="row justify-content-between mb-4 text-left" id="realestate-filters" onsubmit="return Filter(event)">
     <div class="d-none">
         <input name="Limit" value="@Model.Limit" />
         <input name="Page" class="page" id="Page" value="@Model.Page" />

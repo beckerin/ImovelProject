@@ -45,7 +45,6 @@ namespace WebApplication1.Controllers
                 Large = true,
                 Option = Filter.ParseOption(collection["Option"]),
             };
-            filter.FillStatic(filter);
 
             return RedirectToAction("List", "Realestate");
         }

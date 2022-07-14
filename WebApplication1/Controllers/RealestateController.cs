@@ -8,6 +8,8 @@ using WebApplication1.Models;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
+using System;
+using Microsoft.Extensions.Primitives;
 
 namespace WebApplication1.Controllers
 {
@@ -21,11 +23,12 @@ namespace WebApplication1.Controllers
             {
                 filter = new Filter();
             }
+
             filter.Limit = 4;
             filter.Large = true;
             filter.Home = false;
             filter.Page = 0;
-            filter.FillStatic(filter);
+
             filter.Populate();
 
             return View(filter);
@@ -57,6 +60,8 @@ namespace WebApplication1.Controllers
                 _ = int.TryParse(collection["AgentID"], out int agentID);
                 List<string> pics = new List<string>();
 
+
+
                 Realestate rs = new()
                 {
                     Title = collection["Title"],
@@ -66,9 +71,10 @@ namespace WebApplication1.Controllers
                     RentPrice = rentPrice,
                     Area = area,
                     Address  = collection["Address"],
-
                     AgentID = agentID
                 };
+
+                rs.PopulateImages(collection.Files);
 
                 Realestate.InsertOrUpdate(rs);
                 return RedirectToAction(nameof(List));
@@ -115,37 +121,7 @@ namespace WebApplication1.Controllers
                     return NotFound();
                 }
 
-                if (collection.Files.Count > 0)
-                {
-                    foreach (IFormFile file in collection.Files)
-                    {
-                        //criamos o path do file
-                        var tempFolder = IO.Path.Combine(IO.Path.GetTempPath(), id.ToString());
-
-                        if (!IO.Directory.Exists(tempFolder))
-                        {
-                            IO.Directory.CreateDirectory(tempFolder);
-                        }
-
-                        var tempPath = IO.Path.Combine(tempFolder, file.FileName);
-
-                        //vamos buscar a stream dele
-                        using (IO.Stream stream = file.OpenReadStream())
-
-                        //injetamos para um memoryStream para podermos manipular ou ir buscar todos os bytes de uma vez só
-                        //using (var createdFile = IO.File.Create(tempPath))
-                        //{
-                        //    await stream.CopyToAsync(createdFile);
-                        //}
-
-                        using (IO.FileStream streamWriter = new IO.FileStream(tempPath, IO.FileMode.Create, IO.FileAccess.Write))
-                        {
-                            await stream.CopyToAsync(streamWriter);
-                        }
-
-                        rs.InsertPicture(tempPath);
-                    }
-                }
+                rs.PopulateImages(collection.Files);
 
                 rs.Title = collection["Title"];
                 rs.Description = collection["Description"];
@@ -167,8 +143,12 @@ namespace WebApplication1.Controllers
             }
         }
 
-        public IActionResult RequestFilter(Filter filter)
+        [HttpPost]
+        public IActionResult RequestFilter(IFormCollection collection)
         {
+            Filter filter = new Filter();
+            FillBasedOnRequest(filter, collection);
+            filter.Populate();
             return ViewComponent("RealestateFilter", filter);
         }
         public IActionResult RequestList(Filter filter)
@@ -198,6 +178,39 @@ namespace WebApplication1.Controllers
             byte[] fileBytes = IO.File.ReadAllBytes(firstPicture);
 
             return File(fileBytes, "image/jpg");
+        }
+
+
+        public void FillBasedOnRequest(object atype, IFormCollection collection)
+        {
+            Type t = atype.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            foreach (PropertyInfo prp in props)
+            {
+                if (!string.IsNullOrEmpty(collection[prp.Name]))
+                {
+                    var target = t.GetProperty(prp.Name);
+                    var type = target.PropertyType.FullName;
+
+                    if (type.Contains("String"))
+                        target.SetValue(atype, collection[prp.Name].ToString(), null);
+                    if (type.Contains("Int32"))
+                    {
+                        _= int.TryParse(collection[prp.Name], out int value);
+                        target.SetValue(atype, value, null);
+                    }
+                    if (type.Contains("Boolean"))
+                    {
+                        _= bool.TryParse(collection[prp.Name], out bool value);
+                        target.SetValue(atype, value, null);
+                    }
+                    if (type.Contains("OptionType"))
+                    {
+                        target.SetValue(atype, Filter.ParseOption(collection[prp.Name]), null);
+                    }
+
+                }
+            }
         }
     }
 }

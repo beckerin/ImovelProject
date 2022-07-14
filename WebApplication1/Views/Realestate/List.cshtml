@@ -37,7 +37,7 @@
         const RefreshFilter = function(params) {
             $.ajax({
                 url: urlFilter,
-                method: "GET",
+                method: "POST",
                 data: params,
             }).done(function(response) {
                 $(filterID).replaceWith(response);

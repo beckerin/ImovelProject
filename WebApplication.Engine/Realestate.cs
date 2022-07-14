@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using IO = System.IO;
 using System.Linq;
 using static WebApplication.Engine.Filter;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace WebApplication.Engine
 {
@@ -188,6 +190,41 @@ namespace WebApplication.Engine
             return Database.FindAll(x => x.AgentID == agentID).ToList();
         }
 
+        public async void PopulateImages(IFormFileCollection files)
+        {
+            if (files.Count > 0)
+            {
+                foreach (IFormFile file in files)
+                {
+                    //criamos o path do file
+                    var tempFolder = IO.Path.Combine(IO.Path.GetTempPath(), ID.ToString());
+
+                    if (!IO.Directory.Exists(tempFolder))
+                    {
+                        IO.Directory.CreateDirectory(tempFolder);
+                    }
+
+                    var tempPath = IO.Path.Combine(tempFolder, file.FileName);
+
+                    //vamos buscar a stream dele
+                    using (IO.Stream stream = file.OpenReadStream())
+
+                    //injetamos para um memoryStream para podermos manipular ou ir buscar todos os bytes de uma vez só
+                    //using (var createdFile = IO.File.Create(tempPath))
+                    //{
+                    //    await stream.CopyToAsync(createdFile);
+                    //}
+
+                    using (IO.FileStream streamWriter = new IO.FileStream(tempPath, IO.FileMode.Create, IO.FileAccess.Write))
+                    {
+                        await stream.CopyToAsync(streamWriter);
+                    }
+
+                    InsertPicture(tempPath);
+                }
+            }
+        }
+
         public void InsertPicture(string value)
         {
             Pictures.Add(value);
@@ -265,7 +302,6 @@ namespace WebApplication.Engine
         {
             IQueryable<Realestate> realestates = Database.AsQueryable();
             {
-                realestates = realestates.Where(x => x.Address.Contains(filter.Address, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrWhiteSpace(filter.Address))
                 {
                     realestates = realestates.Where(x => x.Address.Contains(filter.Address, StringComparison.OrdinalIgnoreCase));

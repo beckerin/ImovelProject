@@ -25,8 +25,6 @@ namespace WebApplication1.Controllers
                     AgentID = model.ID,
                     Large = false,
                 };
-
-                filter.FillStatic(filter);
                 
                 if (model != null)
                     return View(model);

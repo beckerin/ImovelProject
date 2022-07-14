@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,30 +55,6 @@ namespace WebApplication.Engine
 
         public Filter()
         {
-        }
-
-        public void FillStatic(Filter filter)
-        {
-            Address = filter.Address;
-            if (filter.Large != null) Large = filter.Large;
-            if (filter.Limit != null && filter.Limit > 0) Limit = filter.Limit;
-            if (filter.MinRooms != null) MinRooms = filter.MinRooms;
-            if (filter.MaxRooms != null) MaxRooms = filter.MaxRooms;
-            if (filter.MinSalePrice != null) MinSalePrice = filter.MinSalePrice;
-            if (filter.MaxSalePrice != null) MaxSalePrice = filter.MaxSalePrice;
-            if (filter.MinRentPrice != null) MinRentPrice = filter.MinRentPrice;
-            if (filter.MaxRentPrice != null) MaxRentPrice = filter.MaxRentPrice;
-            if (filter.MinArea != null) MinArea = filter.MinArea;
-            if (filter.MaxArea != null) MaxArea = filter.MaxArea;
-            if (filter.OrderBy != null) OrderBy = filter.OrderBy;
-            if (filter.AgentID != null) AgentID = filter.AgentID;
-            if (filter.Limit != null) Limit = filter.Limit;
-            if (filter.Page != null) Page = filter.Page;
-            if (filter.Count != null) Count = filter.Count;
-            if (filter.Editing != null) Editing = filter.Editing;
-            if (filter.Home != null) Home = filter.Home;
-            if (filter.Large != null) Large = filter.Large;
-            if (filter.Option != null) Option = filter.Option;
         }
 
         public void Populate()
